@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mastery Hub | Interactive Question Bank & Self-Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #060913;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.10) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.4); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.35); border-radius: 9999px; }
+        .option-btn { transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1); }
+        .option-btn:hover:not(:disabled) { transform: translateY(-1px); }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <header class="sticky top-0 z-30 glass-panel border-b border-slate-800/80 px-4 sm:px-8 py-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 cursor-pointer group" onclick="app.showView('dashboard')">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition">
+                    <i class="ph-bold ph-brain text-white text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white">AI Mastery Hub</h1>
+                        <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">100 MCQs</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Artificial Intelligence Question Bank & Self-Test Portal</p>
+                </div>
+            </div>
+
+            <nav class="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/90">
+                <button onclick="app.showView('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-indigo-600 text-white shadow-md shadow-indigo-600/25 transition">
+                    <i class="ph-bold ph-squares-four text-base"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="app.showView('Explorer')" id="nav-Explorer" class="nav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 transition">
+                    <i class="ph-bold ph-books text-base"></i>
+                    <span>100 MCQs Bank</span>
+                </button>
+                <button onclick="app.showView('theory')" id="nav-theory" class="nav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 transition">
+                    <i class="ph-bold ph-notebook text-base"></i>
+                    <span>2M & 6M Q&A</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <section id="view-dashboard" class="space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950/60 to-slate-900 border border-indigo-500/25 p-6 sm:p-10 shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
+                        <i class="ph-fill ph-check-circle text-emerald-400"></i> Complete 5-Unit AI Question Bank Verified
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                        Interactive AI Self-Test & Revision Portal
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Practice all 100 One-Mark MCQs with instant answer verification and explanations, take a timed Mock Exam, or review all 90 Part-B (2 Marks) and Part-C (6 Marks) theory questions.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="app.openTestConfigurator('all', 'practice')" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition">
+                            <i class="ph-bold ph-lightning text-lg"></i> Start Practice Mode
+                        </button>
+                        <button onclick="app.openTestConfigurator('all', 'exam')" class="px-5 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 font-semibold text-sm flex items-center gap-2 border border-slate-700 transition">
+                            <i class="ph-bold ph-timer text-lg text-emerald-400"></i> Start Timed Exam
+                        </button>
+                        <button onclick="app.showView('Explorer')" class="px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 font-semibold text-sm flex items-center gap-2 border border-slate-800 transition">
+                            <i class="ph-bold ph-list-magnifying-glass text-lg text-indigo-400"></i> Browse All 100 Answers
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-panel rounded-2xl p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                        <i class="ph-bold ph-list-checks text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium">Total MCQs</p>
+                        <p class="text-2xl font-bold">100</p>
+                    </div>
+                </div>
+                <div class="glass-panel rounded-2xl p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                        <i class="ph-bold ph-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium">Questions Mastered</p>
+                        <p class="text-2xl font-bold" id="stat-mastered">0 / 100</p>
+                    </div>
+                </div>
+                <div class="glass-panel rounded-2xl p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                        <i class="ph-bold ph-chart-line-up text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium">Average Score</p>
+                        <p class="text-2xl font-bold" id="stat-accuracy">0%</p>
+                    </div>
+                </div>
+                <div class="glass-panel rounded-2xl p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                        <i class="ph-bold ph-book-open-text text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium">Theory Questions</p>
+                        <p class="text-2xl font-bold">90 (2M & 6M)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unit Selection Cards -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold">Select a Unit to Test</h3>
+                        <p class="text-xs text-slate-400">Each unit contains 20 curated One-Mark MCQs + Part B/C Theory</p>
+                    </div>
+                    <button onclick="app.resetProgress()" class="text-xs text-slate-400 hover:text-rose-400 flex items-center gap-1 transition">
+                        <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset Session Stats
+                    </button>
+                </div>
+                <div id="unit-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: TEST CONFIGURATOR MODAL -->
+        <div id="test-config-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-panel bg-slate-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-700 shadow-2xl space-y-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                            <i class="ph-bold ph-sliders text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">Configure Your Self-Test</h3>
+                            <p class="text-xs text-slate-400">Customize how you want to take this test</p>
+                        </div>
+                    </div>
+                    <button onclick="app.closeTestConfigurator()" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                        <i class="ph-bold ph-x text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Select Unit</label>
+                        <select id="config-unit" class="w-full rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                            <option value="all">All 5 Units Combined (100 MCQs)</option>
+                            <option value="1">Unit I: Introduction to Artificial Intelligence (20 MCQs)</option>
+                            <option value="2">Unit II: Problem Solving Using Search Techniques (20 MCQs)</option>
+                            <option value="3">Unit III: Knowledge Representation & Optimization (20 MCQs)</option>
+                            <option value="4">Unit IV: Game Playing & Constraint Satisfaction Problems (20 MCQs)</option>
+                            <option value="5">Unit V: Intelligent Agents (20 MCQs)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Test Mode</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" onclick="app.setModeChoice('practice')" id="mode-btn-practice" class="p-3.5 rounded-xl border-2 border-indigo-500 bg-indigo-500/10 text-left transition">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm">Practice Mode</span>
+                                    <i class="ph-fill ph-check-circle text-indigo-400"></i>
+                                </div>
+                                <p class="text-xs text-slate-400">Instant answer reveal & detailed explanations after each click.</p>
+                            </button>
+                            <button type="button" onclick="app.setModeChoice('exam')" id="mode-btn-exam" class="p-3.5 rounded-xl border-2 border-slate-700 bg-slate-800/50 text-left transition">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm">Exam Mode</span>
+                                    <i class="ph-bold ph-timer text-slate-400"></i>
+                                </div>
+                                <p class="text-xs text-slate-400">Timed simulation. Results and explanations shown at the end.</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Question Count</label>
+                            <select id="config-count" class="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                                <option value="10">10 Questions</option>
+                                <option value="20" selected>20 Questions (Full Unit)</option>
+                                <option value="50">50 Questions</option>
+                                <option value="100">All 100 Questions</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Question Order</label>
+                            <select id="config-shuffle" class="w-full rounded-xl bg-slate-800 border border-slate-700 px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                                <option value="sequential">Original PDF Order</option>
+                                <option value="shuffle">Shuffle Questions</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button onclick="app.closeTestConfigurator()" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800">Cancel</button>
+                    <button onclick="app.startConfiguredTest()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+                        <i class="ph-bold ph-play"></i> Launch Test Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: ACTIVE QUIZ / SELF-TEST ENGINE -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <!-- Top Quiz Bar -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="app.confirmExitQuiz()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm flex items-center gap-1.5">
+                        <i class="ph-bold ph-arrow-left"></i> <span class="hidden sm:inline">Exit</span>
+                    </button>
+                    <div>
+                        <span id="quiz-unit-badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300">Unit I</span>
+                        <h3 id="quiz-mode-title" class="text-sm font-bold text-slate-200 mt-0.5">Practice Mode</h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700">
+                        <i class="ph-bold ph-clock text-indigo-400"></i>
+                        <span id="quiz-timer" class="font-mono text-sm font-bold">00:00</span>
+                    </div>
+                    <button onclick="app.finishQuiz()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-emerald-600/20 flex items-center gap-1.5">
+                        <i class="ph-bold ph-flag-checkered"></i> Submit Test
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Quiz Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left Question Area -->
+                <div class="lg:col-span-8 glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
+                    <!-- Progress & Bookmark -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
+                            <span id="quiz-progress-text">Question 1 of 20</span>
+                            <button onclick="app.toggleFlagCurrent()" id="flag-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                                <i class="ph-bold ph-bookmark-simple"></i> <span>Flag for Review</span>
+                            </button>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style="width: 5%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Stem -->
+                    <div class="py-2">
+                        <h4 id="quiz-question-text" class="text-lg sm:text-xl font-bold leading-relaxed">
+                            Loading question...
+                        </h4>
+                    </div>
+
+                    <!-- Options Container -->
+                    <div id="quiz-options-container" class="space-y-3">
+                        <!-- Dynamically populated options -->
+                    </div>
+
+                    <!-- Instant Explanation Box (Practice Mode) -->
+                    <div id="quiz-explanation-box" class="hidden rounded-2xl p-4 bg-indigo-950/50 border border-indigo-500/30 space-y-1.5">
+                        <div class="flex items-center gap-2 text-indigo-300 font-bold text-xs uppercase tracking-wider">
+                            <i class="ph-fill ph-lightbulb text-base text-amber-400"></i> Detailed Concept Explanation
+                        </div>
+                        <p id="quiz-explanation-text" class="text-sm text-slate-300 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Bottom Navigation Controls -->
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+                        <button onclick="app.prevQuestion()" id="btn-prev" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-sm font-semibold flex items-center gap-2 transition">
+                            <i class="ph-bold ph-caret-left"></i> Previous
+                        </button>
+                        <span class="text-xs text-slate-500 hidden sm:inline">Tip: Use keys 1-4 or A-D to select, Arrow keys to navigate</span>
+                        <button onclick="app.nextQuestion()" id="btn-next" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition">
+                            <span>Next</span> <i class="ph-bold ph-caret-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Question Palette -->
+                <div class="lg:col-span-4 glass-panel rounded-3xl p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-sm">Question Navigator</h4>
+                        <span id="palette-answered-count" class="text-xs text-slate-400">0 Answered</span>
+                    </div>
+                    <div class="flex flex-wrap gap-3 text-[11px] text-slate-400 pb-2 border-b border-slate-800">
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Answered</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Flagged</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span> Unvisited</span>
+                    </div>
+                    <div id="quiz-palette-grid" class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2 max-h-72 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- Palette buttons -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: QUIZ RESULTS & ANALYTICS -->
+        <section id="view-results" class="hidden space-y-8">
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 text-center space-y-6 relative overflow-hidden">
+                <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 mx-auto flex items-center justify-center shadow-xl shadow-indigo-500/30">
+                    <i class="ph-bold ph-trophy text-4xl text-white"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold" id="result-headline">Test Completed!</h2>
+                    <p class="text-slate-400 text-sm" id="result-subline">Here is your detailed performance breakdown</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                        <p class="text-xs text-slate-400">Final Score</p>
+                        <p class="text-2xl font-extrabold text-indigo-400 mt-1" id="res-score">0 / 20</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                        <p class="text-xs text-slate-400">Accuracy</p>
+                        <p class="text-2xl font-extrabold text-emerald-400 mt-1" id="res-accuracy">0%</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                        <p class="text-xs text-slate-400">Correct / Wrong</p>
+                        <p class="text-2xl font-extrabold text-amber-400 mt-1" id="res-cw">0 / 0</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                        <p class="text-xs text-slate-400">Time Taken</p>
+                        <p class="text-2xl font-extrabold text-purple-400 mt-1" id="res-time">00:00</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3 pt-2">
+                    <button onclick="app.retryWrongQuestions()" id="btn-retry-wrong" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-rose-600/20">
+                        <i class="ph-bold ph-arrows-clockwise"></i> Retest Incorrect Questions
+                    </button>
+                    <button onclick="app.restartSameTest()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm flex items-center gap-2">
+                        <i class="ph-bold ph-repeat"></i> Retake Full Test
+                    </button>
+                    <button onclick="app.showView('dashboard')" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm flex items-center gap-2">
+                        <i class="ph-bold ph-house"></i> Back to Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Complete Answer Review List -->
+            <div class="space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="text-xl font-bold">Detailed Question-by-Question Review</h3>
+                    <div class="flex gap-2">
+                        <button onclick="app.filterReview('all')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700">All</button>
+                        <button onclick="app.filterReview('wrong')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">Incorrect / Skipped</button>
+                        <button onclick="app.filterReview('correct')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Correct</button>
+                    </div>
+                </div>
+                <div id="results-review-list" class="space-y-4">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: QUESTION BANK EXPLORER (ALL 100 MCQs) -->
+        <section id="view-Explorer" class="hidden space-y-6">
+            <div class="glass-panel rounded-3xl p-6 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">Complete 100 MCQ Question Bank</h2>
+                        <p class="text-xs text-slate-400">Search, filter by Unit, or toggle answers for rapid revision before exams</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="app.toggleAllExplorerAnswers()" id="btn-toggle-all-ans" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2">
+                            <i class="ph-bold ph-eye"></i> <span>Show All Answers</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <div class="sm:col-span-2 relative">
+                        <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="explorer-search" oninput="app.renderExplorer()" placeholder="Search by keyword (e.g., Turing, A*, Minimax, Propositional, CSP)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <select id="explorer-unit-filter" onchange="app.renderExplorer()" class="rounded-xl bg-slate-900 border border-slate-700 px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                        <option value="all">All Units (100 Questions)</option>
+                        <option value="1">Unit I: Intro to AI (20)</option>
+                        <option value="2">Unit II: Search Techniques (20)</option>
+                        <option value="3">Unit III: Knowledge Rep & Optimization (20)</option>
+                        <option value="4">Unit IV: Game Playing & CSP (20)</option>
+                        <option value="5">Unit V: Intelligent Agents (20)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="explorer-list" class="space-y-4">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- VIEW 6: 2-MARK & 6-MARK THEORY STUDY BANK -->
+        <section id="view-theory" class="hidden space-y-6">
+            <div class="glass-panel rounded-3xl p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">Part B (2 Marks) & Part C (6 Marks) Study Guide</h2>
+                        <p class="text-xs text-slate-400">All subjective questions from your PDF categorized by Unit, Course Outcome (CO), and Bloom's Taxonomy Level with model key points</p>
+                    </div>
+                    <select id="theory-unit-filter" onchange="app.renderTheory()" class="rounded-xl bg-slate-900 border border-slate-700 px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-indigo-500">
+                        <option value="all">All 5 Units</option>
+                        <option value="1">Unit I (CO1)</option>
+                        <option value="2">Unit II (CO2)</option>
+                        <option value="3">Unit III (CO3)</option>
+                        <option value="4">Unit IV (CO4)</option>
+                        <option value="5">Unit V (CO5)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="theory-list" class="space-y-6">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Confirmation Modal (No browser alert/confirm) -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel bg-slate-900 rounded-2xl max-w-sm w-full p-6 border border-slate-700 space-y-4 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center">
+                <i class="ph-bold ph-warning text-2xl"></i>
+            </div>
+            <h4 class="font-bold text-lg" id="confirm-title">Exit Active Test?</h4>
+            <p class="text-xs text-slate-400" id="confirm-desc">Your current test progress will be lost if you leave now.</p>
+            <div class="flex gap-3 justify-center pt-2">
+                <button onclick="app.closeConfirmModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-xs font-semibold">Stay in Test</button>
+                <button id="confirm-action-btn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const UNITS_META = [
+            { id: 1, code: "UNIT I", title: "Introduction to Artificial Intelligence", co: "CO1", icon: "ph-robot", color: "from-indigo-500 to-blue-600" },
+            { id: 2, code: "UNIT II", title: "Problem Solving Using Search Techniques", co: "CO2", icon: "ph-tree-structure", color: "from-emerald-500 to-teal-600" },
+            { id: 3, code: "UNIT III", title: "Knowledge Representation & Optimization", co: "CO3", icon: "ph-graph", color: "from-amber-500 to-orange-600" },
+            { id: 4, code: "UNIT IV", title: "Game Playing & Constraint Satisfaction", co: "CO4", icon: "ph-strategy", color: "from-purple-500 to-pink-600" },
+            { id: 5, code: "UNIT V", title: "Intelligent Agents", co: "CO5", icon: "ph-cpu", color: "from-rose-500 to-red-600" }
+        ];
+
+        // Complete 100 MCQs exactly from the uploaded PDF
+        const MCQ_BANK = [
+            // ================= UNIT I (20 MCQs) =================
+            { id: 101, unit: 1, num: 1, q: "Who is considered the father of Artificial Intelligence?", options: ["Charles Babbage", "Alan Turing", "John McCarthy", "Marvin Minsky"], ans: 2, exp: "John McCarthy coined the term 'Artificial Intelligence' in 1956 at the Dartmouth Conference and is widely regarded as the father of AI." },
+            { id: 102, unit: 1, num: 2, q: "In which year was the term \"Artificial Intelligence\" coined?", options: ["1943", "1956", "1965", "1972"], ans: 1, exp: "The term 'Artificial Intelligence' was formally coined in 1956 during the Dartmouth Summer Research Project on AI." },
+            { id: 103, unit: 1, num: 3, q: "The primary goal of AI is to:", options: ["Replace humans", "Develop machines that can mimic human intelligence", "Automate only repetitive tasks", "Eliminate programming"], ans: 1, exp: "AI aims to create intelligent systems capable of perceiving, reasoning, learning, and solving problems like humans." },
+            { id: 104, unit: 1, num: 4, q: "Which of the following is not a type of AI?", options: ["Narrow AI", "General AI", "Super AI", "Mechanical AI"], ans: 3, exp: "Based on capabilities, AI is classified into Narrow AI (Weak AI), General AI (Strong AI), and Super AI. 'Mechanical AI' is not a standard classification." },
+            { id: 105, unit: 1, num: 5, q: "Applications like speech recognition and image processing come under:", options: ["Strong AI", "Narrow AI", "General AI", "Super AI"], ans: 1, exp: "Speech recognition and image processing are designed for specific tasks, which makes them examples of Narrow (Weak) AI." },
+            { id: 106, unit: 1, num: 6, q: "Human intelligence differs from machine intelligence because:", options: ["Machines can learn faster", "Humans have emotions and consciousness", "Machines make no errors", "Humans never forget"], ans: 1, exp: "Humans possess consciousness, emotional intelligence, intuition, and subjective awareness, which machines lack." },
+            { id: 107, unit: 1, num: 7, q: "The main components of AI include:", options: ["Database and Internet", "Knowledge, Reasoning, Learning, Perception", "Hardware and Software", "Sensors and Storage"], ans: 1, exp: "Core AI components include Knowledge Representation, Reasoning, Learning, Perception, and Problem-Solving." },
+            { id: 108, unit: 1, num: 8, q: "Rationality in AI means:", options: ["Acting like humans", "Doing the right thing to achieve goals", "Using emotions in decisions", "Following instincts"], ans: 1, exp: "A rational agent acts to maximize its expected performance measure given the evidence perceived so far (doing the right thing)." },
+            { id: 109, unit: 1, num: 9, q: "An AI agent is:", options: ["A computer program only", "An entity that perceives environment and acts upon it", "A robot with sensors", "A storage unit"], ans: 1, exp: "An agent is anything that can be viewed as perceiving its environment through sensors and acting upon that environment through actuators." },
+            { id: 110, unit: 1, num: 10, q: "Which of the following is an example of a problem-solving agent?", options: ["Text Editor", "Chess-playing program", "Operating System", "File Manager"], ans: 1, exp: "A chess-playing program searches through possible move sequences to achieve a goal (checkmate), making it a problem-solving agent." },
+            { id: 111, unit: 1, num: 11, q: "The structure of an AI agent consists of:", options: ["Input and Output", "Architecture and Program", "Hardware and Software", "Mind and Body"], ans: 1, exp: "In AI theory, Agent = Architecture (computing device + sensors/actuators) + Agent Program (function mapping percepts to actions)." },
+            { id: 112, unit: 1, num: 12, q: "Which of the following is not an application of AI?", options: ["Autonomous Vehicles", "Expert Systems", "Natural Language Processing", "Word Processing Software"], ans: 3, exp: "Standard word processing software performs document formatting based on direct user commands rather than autonomous AI reasoning." },
+            { id: 113, unit: 1, num: 13, q: "A rational agent always:", options: ["Acts randomly", "Chooses the best possible action", "Ignores the environment", "Depends on emotions"], ans: 1, exp: "A rational agent selects an action that is expected to maximize its performance measure based on its percept sequence and built-in knowledge." },
+            { id: 114, unit: 1, num: 14, q: "Which type of environment is completely observable?", options: ["Partially observable", "Fully observable", "Dynamic", "Multi-agent"], ans: 1, exp: "In a Fully Observable environment, an agent's sensors give it access to the complete state of the environment at each point in time." },
+            { id: 115, unit: 1, num: 15, q: "In a deterministic environment:", options: ["Outcome is uncertain", "Next state is predictable", "Many agents are involved", "Actions are independent"], ans: 1, exp: "An environment is deterministic if the next state of the environment is completely determined by the current state and the action executed by the agent." },
+            { id: 116, unit: 1, num: 16, q: "Which of the following is a goal of AI?", options: ["Reasoning and problem-solving", "Unlimited memory", "Fast execution only", "Better graphics"], ans: 0, exp: "Enabling machines to perform automated reasoning, problem-solving, learning, and perception is a fundamental goal of AI." },
+            { id: 117, unit: 1, num: 17, q: "A chess game environment is classified as:", options: ["Discrete", "Continuous", "Static", "Simple"], ans: 0, exp: "Chess has a finite number of distinct states, percepts, and actions, classifying it as a discrete (and strategic/deterministic) environment." },
+            { id: 118, unit: 1, num: 18, q: "Machine perception in AI deals with:", options: ["Thinking", "Interpreting input from sensors", "Learning", "Memory storage"], ans: 1, exp: "Machine perception is the capability of a system to interpret data from sensors (cameras, microphones, lidar) to understand the world." },
+            { id: 119, unit: 1, num: 19, q: "Which of the following is an intelligent agent?", options: ["Keyboard", "Autonomous vacuum cleaner", "Printer", "Calculator"], ans: 1, exp: "An autonomous robotic vacuum cleaner (like Roomba) senses dirt/obstacles and decides movement actions autonomously." },
+            { id: 120, unit: 1, num: 20, q: "The Turing Test is used to measure:", options: ["Speed of a machine", "Intelligence of a machine", "Memory of a computer", "Software errors"], ans: 1, exp: "Proposed by Alan Turing in 1950, the Turing Test evaluates whether a machine can exhibit intelligent behavior indistinguishable from a human." },
+
+            // ================= UNIT II (20 MCQs) =================
+            { id: 201, unit: 2, num: 1, q: "Which of the following is a blind search strategy?", options: ["Best-first search", "A* search", "Breadth-first search", "Heuristic search"], ans: 2, exp: "Breadth-first search (BFS) is an uninformed (blind) search strategy because it uses no domain-specific heuristic information." },
+            { id: 202, unit: 2, num: 2, q: "Breadth-first search (BFS) uses which data structure?", options: ["Stack", "Queue", "Priority Queue", "Tree"], ans: 1, exp: "BFS expands the shallowest unexpanded node first using a First-In-First-Out (FIFO) Queue." },
+            { id: 203, unit: 2, num: 3, q: "Depth-first search (DFS) uses which data structure?", options: ["Stack", "Queue", "Heap", "Linked List"], ans: 0, exp: "DFS expands the deepest node first using a Last-In-First-Out (LIFO) Stack (or recursion)." },
+            { id: 204, unit: 2, num: 4, q: "Uniform Cost Search expands the node with:", options: ["Highest cost", "Random cost", "Lowest path cost", "Average cost"], ans: 2, exp: "Uniform Cost Search (UCS) expands the node n with the lowest path cost g(n) from the start node using a priority queue." },
+            { id: 205, unit: 2, num: 5, q: "Bidirectional search works by:", options: ["Expanding only forward", "Expanding only backward", "Searching forward from start and backward from goal simultaneously", "Expanding randomly"], ans: 2, exp: "Bidirectional search runs two simultaneous searches—one forward from the initial state and one backward from the goal—stopping when the two frontiers meet." },
+            { id: 206, unit: 2, num: 6, q: "Which search guarantees the shortest solution if step cost = 1?", options: ["Depth-first search", "Breadth-first search", "Best-first search", "Random search"], ans: 1, exp: "BFS explores level by level, so it is guaranteed to find the shallowest (shortest) goal node when all step costs are equal." },
+            { id: 207, unit: 2, num: 7, q: "DFS may fail when:", options: ["Graph is finite", "Graph has infinite depth", "Graph is directed", "Graph is small"], ans: 1, exp: "In state spaces with infinite depth (or loops without cycle checking), DFS can get trapped going down an infinite branch and fail to terminate." },
+            { id: 208, unit: 2, num: 8, q: "The time complexity of BFS is:", options: ["O(n)", "O(b^d)", "O(log n)", "O(d^b)"], ans: 1, exp: "With branching factor b and solution depth d, BFS generates up to O(b^d) nodes in the worst case." },
+            { id: 209, unit: 2, num: 9, q: "Which search strategy is complete but not always optimal?", options: ["DFS", "Uniform Cost Search", "BFS", "A*"], ans: 2, exp: "BFS is always complete (if b is finite), but it is only optimal when step costs are identical; if step costs vary, BFS is not optimal (unlike UCS and A*)." },
+            { id: 210, unit: 2, num: 10, q: "Uniform Cost Search is similar to:", options: ["DFS", "Dijkstra's Algorithm", "Bellman-Ford", "Prim's Algorithm"], ans: 1, exp: "Uniform Cost Search is logically equivalent to Dijkstra's shortest-path algorithm applied to potentially infinite state spaces." },
+            { id: 211, unit: 2, num: 11, q: "Which search uses a heuristic function?", options: ["BFS", "DFS", "Best-first search", "Bidirectional search"], ans: 2, exp: "Best-first search is an informed search strategy that uses an evaluation/heuristic function to select the most promising node." },
+            { id: 212, unit: 2, num: 12, q: "A* Search combines:", options: ["BFS and DFS", "Uniform cost and heuristic search", "Best-first and BFS", "Random and heuristic"], ans: 1, exp: "A* combines Uniform Cost Search's path cost g(n) and Greedy Best-First Search's heuristic estimate h(n)." },
+            { id: 213, unit: 2, num: 13, q: "Heuristic function h(n) estimates:", options: ["Cost already spent", "Cost from node n to goal", "Total path cost", "Random value"], ans: 1, exp: "h(n) represents the estimated cost of the cheapest path from the current state at node n to a goal state." },
+            { id: 214, unit: 2, num: 14, q: "In A* search, evaluation function f(n) = ?", options: ["g(n) - h(n)", "g(n) + h(n)", "h(n) / g(n)", "g(n) * h(n)"], ans: 1, exp: "In A* search, f(n) = g(n) + h(n), representing the estimated total cost of the cheapest solution path passing through node n." },
+            { id: 215, unit: 2, num: 15, q: "Which search is both complete and optimal (with admissible heuristic)?", options: ["DFS", "BFS", "A*", "Best-first search"], ans: 2, exp: "A* search is guaranteed to be both complete and optimal provided the heuristic function h(n) is admissible (never overestimates)." },
+            { id: 216, unit: 2, num: 16, q: "Which search strategy expands the node with the lowest heuristic value?", options: ["BFS", "Greedy Best-first search", "DFS", "Uniform cost search"], ans: 1, exp: "Greedy Best-first search uses f(n) = h(n), always expanding the node that appears closest to the goal." },
+            { id: 217, unit: 2, num: 17, q: "The completeness of DFS depends on:", options: ["Finite state space", "Infinite memory", "Optimal heuristic", "Random choices"], ans: 0, exp: "Graph-search DFS is complete only in finite state spaces (where infinite paths are impossible and visited states are tracked)." },
+            { id: 218, unit: 2, num: 18, q: "Which search is faster when solution depth is small compared to branching factor?", options: ["DFS", "BFS", "Uniform cost search", "A*"], ans: 1, exp: "Among uninformed searches, when the goal is at a shallow depth, BFS finds it quickly without diving deep down wrong branches like DFS." },
+            { id: 219, unit: 2, num: 19, q: "Which of the following has exponential time complexity in worst case?", options: ["BFS", "DFS", "Both BFS and DFS", "None"], ans: 2, exp: "Both BFS O(b^d) and DFS O(b^m) exhibit exponential time complexity in the worst case." },
+            { id: 220, unit: 2, num: 20, q: "Which search maintains two simultaneous frontiers?", options: ["BFS", "DFS", "Bidirectional search", "Uniform cost search"], ans: 2, exp: "Bidirectional search maintains two frontiers: one expanding from the start state and one from the goal state." },
+
+            // ================= UNIT III (20 MCQs) =================
+            { id: 301, unit: 3, num: 1, q: "A knowledge-based agent consists of:", options: ["Only sensors and actuators", "Only reasoning engine", "Knowledge base and inference mechanism", "Hardware components"], ans: 2, exp: "A knowledge-based agent comprises a Knowledge Base (KB) that stores domain facts and an Inference Engine that derives new conclusions." },
+            { id: 302, unit: 3, num: 2, q: "The process of representing information about the world in a form usable by AI is called:", options: ["Ontology", "Knowledge Representation", "Learning", "Perception"], ans: 1, exp: "Knowledge Representation (KR) is the field of AI dedicated to representing information about the world so a computer can reason and solve complex tasks." },
+            { id: 303, unit: 3, num: 3, q: "Which logic is the simplest form of logic used in AI?", options: ["Predicate Logic", "Fuzzy Logic", "Modal Logic", "Propositional Logic"], ans: 3, exp: "Propositional Logic (Boolean logic) is the simplest formal logic in AI, dealing with atomic declarative propositions and logical connectives." },
+            { id: 304, unit: 3, num: 4, q: "Propositional logic deals with:", options: ["Variables only", "True/False statements", "Fuzzy values", "Quantifiers"], ans: 1, exp: "Propositional logic operates on propositions—declarative statements that can be evaluated as either True or False." },
+            { id: 305, unit: 3, num: 5, q: "Ontological Engineering focuses on:", options: ["Database design", "Structuring categories and relations", "Hardware design", "Mathematical equations"], ans: 1, exp: "Ontological Engineering involves representing abstract concepts (events, time, physical objects, beliefs) and structuring categories and relationships at scale." },
+            { id: 306, unit: 3, num: 6, q: "Categories in knowledge representation are used to:", options: ["Store rules only", "Group similar objects", "Perform inference", "Represent uncertainty"], ans: 1, exp: "Categories organize objects with shared properties into groups/classes, enabling inheritance and taxonomic reasoning." },
+            { id: 307, unit: 3, num: 7, q: "Events in AI representation refer to:", options: ["Occurrences that change the state of the world", "Stored facts", "Static categories", "Propositions"], ans: 0, exp: "In event calculus and situation calculus, events represent chunks of spatiotemporal activity or occurrences that alter the state of the world." },
+            { id: 308, unit: 3, num: 8, q: "Mental objects in knowledge representation include:", options: ["Emotions only", "Beliefs, Desires, Intentions", "Physical entities", "Sensors"], ans: 1, exp: "Mental objects represent propositional attitudes held by agents, such as Beliefs, Knows, Desires, and Intentions." },
+            { id: 309, unit: 3, num: 9, q: "A reasoning system for categories helps in:", options: ["Storing binary data", "Drawing inferences about groups of objects", "File management", "Memory compression"], ans: 1, exp: "Category reasoning systems (Semantic Networks and Description Logics) allow agents to infer properties of objects based on their category membership." },
+            { id: 310, unit: 3, num: 10, q: "In propositional logic, symbols usually represent:", options: ["Categories", "Propositions", "Relations", "Objects"], ans: 1, exp: "In propositional logic, atomic symbols (like P, Q, R) stand for whole propositions (facts that are true or false)." },
+            { id: 311, unit: 3, num: 11, q: "Knowledge representation can be divided into:", options: ["Hardware and Software", "Declarative and Procedural", "Events and Objects", "Categories and Ontologies"], ans: 1, exp: "Knowledge is classically divided into Declarative knowledge ('knowing what' - facts) and Procedural knowledge ('knowing how' - rules/procedures)." },
+            { id: 312, unit: 3, num: 12, q: "Example of declarative knowledge:", options: ["A cooking recipe", "Paris is the capital of France", "Driving a car", "Playing a piano"], ans: 1, exp: "'Paris is the capital of France' is an explicit factual statement, which is the definition of declarative knowledge." },
+            { id: 313, unit: 3, num: 13, q: "Procedural knowledge represents:", options: ["Facts", "How to perform tasks", "Objects", "Categories"], ans: 1, exp: "Procedural knowledge encodes step-by-step instructions or skills for how to accomplish a specific task." },
+            { id: 314, unit: 3, num: 14, q: "Which of the following is NOT part of propositional logic?", options: ["AND", "OR", "NOT", "FOR ALL (∀)"], ans: 3, exp: "The universal quantifier FOR ALL (∀) belongs to First-Order Predicate Logic, not Propositional Logic." },
+            { id: 315, unit: 3, num: 15, q: "Inference rules in logic are used for:", options: ["Memory storage", "Deriving new facts from existing facts", "Hardware design", "Ontology design"], ans: 1, exp: "Inference rules (like Modus Ponens and Resolution) allow an agent to logically derive new valid sentences from an existing knowledge base." },
+            { id: 316, unit: 3, num: 16, q: "The main drawback of propositional logic is:", options: ["Too simple", "Cannot represent relations between objects", "Difficult syntax", "Requires emotions"], ans: 1, exp: "Propositional logic lacks objects, relations, and quantifiers, so it has very limited expressive power to compactly describe rules across many objects." },
+            { id: 317, unit: 3, num: 17, q: "Hill climbing is a type of:", options: ["Random algorithm", "Heuristic search algorithm", "Blind search", "Sorting algorithm"], ans: 1, exp: "Hill climbing is a local heuristic optimization search algorithm that continuously moves in the direction of increasing value/heuristic quality." },
+            { id: 318, unit: 3, num: 18, q: "A major drawback of hill climbing:", options: ["Always optimal", "Gets stuck in local maxima", "Requires high memory", "Requires randomness"], ans: 1, exp: "Simple hill climbing often gets trapped at local maxima, plateaus (flat local maxima), and ridges without reaching the global maximum." },
+            { id: 319, unit: 3, num: 19, q: "Local beam search works by:", options: ["Expanding only one node", "Keeping track of k states simultaneously", "Expanding deepest node", "Expanding random state"], ans: 1, exp: "Local beam search keeps track of k states in parallel; at each step it generates all successors of all k states and selects the best k successors." },
+            { id: 320, unit: 3, num: 20, q: "Genetic Algorithm is inspired by:", options: ["Physics", "Natural evolution and genetics", "Chemistry", "Statistics"], ans: 1, exp: "Genetic Algorithms are stochastic optimization techniques inspired by Darwinian natural selection, using selection, crossover, and mutation." },
+
+            // ================= UNIT IV (20 MCQs) =================
+            { id: 401, unit: 4, num: 1, q: "Mini-Max algorithm is mainly used in:", options: ["Sorting", "Searching", "Game Playing", "Optimization"], ans: 2, exp: "The Minimax algorithm is a decision-making algorithm used in two-player zero-sum adversarial games like Chess and Tic-Tac-Toe." },
+            { id: 402, unit: 4, num: 2, q: "The Mini-Max strategy assumes that the opponent is:", options: ["Friendly", "Neutral", "Optimal", "Random"], ans: 2, exp: "Minimax assumes that the MIN opponent plays optimally to minimize MAX's utility score." },
+            { id: 403, unit: 4, num: 3, q: "Alpha-Beta pruning is applied to:", options: ["Reduce the number of nodes evaluated", "Increase branching factor", "Avoid backtracking", "Simplify CSP"], ans: 0, exp: "Alpha-Beta pruning eliminates branches in the game tree that cannot possibly influence the final minimax decision, drastically reducing evaluated nodes." },
+            { id: 404, unit: 4, num: 4, q: "Which of the following is a two-player game search algorithm?", options: ["Depth First Search", "Breadth First Search", "Mini-Max", "A*"], ans: 2, exp: "Mini-Max is specifically designed for two-player turn-based adversarial games." },
+            { id: 405, unit: 4, num: 5, q: "Alpha-Beta pruning works by:", options: ["Expanding all nodes", "Cutting off branches that don't affect the result", "Using heuristic evaluation", "Ignoring terminal states"], ans: 1, exp: "It maintains two bounds (Alpha and Beta) and prunes subtrees as soon as it proves they are worse than a previously examined move." },
+            { id: 406, unit: 4, num: 6, q: "In game trees, leaf nodes represent:", options: ["Moves available", "Final outcomes / utility values", "Player strategies", "Branching factor"], ans: 1, exp: "Terminal (leaf) nodes represent the end states of the game and contain the numerical utility values (win, loss, draw)." },
+            { id: 407, unit: 4, num: 7, q: "CSP stands for:", options: ["Constraint Satisfaction Problem", "Conditional State Planning", "Current System Process", "Common State Protocol"], ans: 0, exp: "CSP stands for Constraint Satisfaction Problem." },
+            { id: 408, unit: 4, num: 8, q: "A CSP is defined by:", options: ["States only", "Actions only", "Variables, Domains, Constraints", "Nodes and Edges"], ans: 2, exp: "A CSP consists of three components: a set of Variables (X), a set of Domains (D) for each variable, and a set of Constraints (C)." },
+            { id: 409, unit: 4, num: 9, q: "Which of the following is a binary constraint?", options: ["Restriction on a single variable", "Restriction between two variables", "Restriction among three variables", "Constraint involving all variables"], ans: 1, exp: "A binary constraint relates exactly two variables (e.g., SA ≠ WA in map coloring)." },
+            { id: 410, unit: 4, num: 10, q: "Non-binary constraints involve:", options: ["One variable", "More than two variables", "Only leaf nodes", "One domain"], ans: 1, exp: "Higher-order (non-binary) constraints involve three or more variables (such as cryptarithmetic column constraints or AllDiff)." },
+            { id: 411, unit: 4, num: 11, q: "Constraint Propagation helps in:", options: ["Increasing domains", "Reducing variable domains", "Expanding constraints", "Ignoring constraints"], ans: 1, exp: "Constraint propagation uses constraints to eliminate inconsistent values from variable domains before or during search." },
+            { id: 412, unit: 4, num: 12, q: "Arc Consistency (AC-3) algorithm is used for:", options: ["Constraint Propagation", "Game Tree Search", "Utility Evaluation", "Genetic Algorithm"], ans: 0, exp: "The AC-3 algorithm enforces arc consistency across binary constraints as a core form of constraint propagation." },
+            { id: 413, unit: 4, num: 13, q: "Backtracking search for CSPs is a variant of:", options: ["BFS", "DFS", "Depth First Search", "Greedy Search"], ans: 2, exp: "Backtracking search is a depth-first search (DFS) that assigns values to one variable at a time and backtracks when no legal value remains. (Both b and c represent Depth-First Search)." },
+            { id: 414, unit: 4, num: 14, q: "The basic drawback of simple backtracking is:", options: ["Revisiting failures repeatedly", "Large domains", "No constraints", "Single variable"], ans: 0, exp: "Chronological backtracking without inference repeatedly explores failing subtrees (thrashing) because it doesn't detect root causes of conflicts early." },
+            { id: 415, unit: 4, num: 15, q: "Which search uses heuristics like MRV and LCV?", options: ["Minimax", "Alpha-Beta", "CSP Backtracking Search", "Genetic Algorithm"], ans: 2, exp: "Minimum Remaining Values (MRV) and Least Constraining Value (LCV) are variable/value ordering heuristics used in CSP Backtracking Search." },
+            { id: 416, unit: 4, num: 16, q: "Local search for CSPs is especially useful when:", options: ["State space is small", "State space is large", "No constraints exist", "Search depth is limited"], ans: 1, exp: "Local search (like Min-Conflicts) is highly effective for very large CSPs (e.g., million-queens problem) where systematic search runs out of time/memory." },
+            { id: 417, unit: 4, num: 17, q: "The most common local search method for CSPs is:", options: ["Minimax", "Alpha-Beta", "Hill Climbing (with min-conflicts)", "BFS"], ans: 2, exp: "Local search for CSPs typically uses a complete-state formulation with hill climbing guided by the min-conflicts heuristic." },
+            { id: 418, unit: 4, num: 18, q: "Min-conflicts heuristic is used in:", options: ["Game Playing", "CSP Local Search", "Constraint Propagation", "Alpha-Beta pruning"], ans: 1, exp: "In CSP local search, the min-conflicts heuristic chooses a value for a conflicted variable that results in the minimum number of conflicts with other variables." },
+            { id: 419, unit: 4, num: 19, q: "Structure of CSP defines:", options: ["Number of constraints only", "Domains only", "How variables and constraints are connected", "The heuristic used"], ans: 2, exp: "The problem structure of a CSP (represented by its constraint graph topology, such as trees or independent subproblems) shows how variables and constraints are interconnected." },
+            { id: 420, unit: 4, num: 20, q: "A CSP can be represented as a:", options: ["Tree only", "Constraint Network", "Stack", "Queue"], ans: 1, exp: "A CSP is naturally modeled as a Constraint Network (or Constraint Graph), where nodes are variables and arcs are constraints." },
+
+            // ================= UNIT V (20 MCQs) =================
+            { id: 501, unit: 5, num: 1, q: "Which of the following is the main function of a knowledge-based agent?", options: ["Searching only", "Reasoning and decision-making", "Optimization", "Learning"], ans: 1, exp: "A knowledge-based agent maintains an internal knowledge base to reason about the environment and make informed decisions." },
+            { id: 502, unit: 5, num: 2, q: "In knowledge-based agents, the knowledge base stores:", options: ["Only raw data", "Facts and rules", "Programs", "Messages"], ans: 1, exp: "The Knowledge Base (KB) is a set of sentences expressed in a formal representation language representing facts and rules about the world." },
+            { id: 503, unit: 5, num: 3, q: "Which logic is used as the basis for knowledge-based agents in Unit V?", options: ["First-order logic", "Propositional logic", "Fuzzy logic", "Temporal logic"], ans: 1, exp: "Unit V focuses on Propositional Logic agents, propositional theorem proving, and propositional model checking." },
+            { id: 504, unit: 5, num: 4, q: "A proposition in propositional logic refers to:", options: ["A variable with multiple values", "A statement that is either true or false", "An equation", "A symbol only"], ans: 1, exp: "A proposition is a declarative sentence that is either True or False, but not both." },
+            { id: 505, unit: 5, num: 5, q: "Which operator is NOT used in propositional logic?", options: ["AND (∧)", "OR (∨)", "NOT (¬)", "FOR ALL (∀)"], ans: 3, exp: "FOR ALL (∀) is the universal quantifier used in First-Order Logic, not in Propositional Logic." },
+            { id: 506, unit: 5, num: 6, q: "Propositional theorem proving involves:", options: ["Checking syntax only", "Deriving conclusions from axioms using inference", "Machine learning", "Numerical analysis"], ans: 1, exp: "Theorem proving applies logical inference rules directly to the sentences in the knowledge base to construct a proof of a desired conclusion." },
+            { id: 507, unit: 5, num: 7, q: "Which method is commonly used for propositional theorem proving?", options: ["A* Algorithm", "Minimax", "Resolution", "Regression"], ans: 2, exp: "The Resolution inference rule (coupled with Conjunctive Normal Form conversion) forms a complete theorem-proving method for propositional logic." },
+            { id: 508, unit: 5, num: 8, q: "Model checking in propositional logic means:", options: ["Generating new axioms", "Verifying if a formula is true in a model", "Building semantic networks", "Backtracking search"], ans: 1, exp: "Model checking enumerates or searches through possible truth assignments (models) to check whether a sentence holds true in all models where the KB is true." },
+            { id: 509, unit: 5, num: 9, q: "Which of the following is an example of a knowledge-based agent?", options: ["Reflex agent", "Simple search agent", "Expert system", "Reactive robot"], ans: 2, exp: "An Expert System explicitly uses a domain Knowledge Base and an Inference Engine, making it a classic knowledge-based agent." },
+            { id: 510, unit: 5, num: 10, q: "Which of the following is a key component of agent architecture?", options: ["Data mining", "Perception, reasoning, and action", "Sorting", "Compilation"], ans: 1, exp: "Intelligent agent architectures organize how the agent perceives the world, reasons about its beliefs/goals, and executes actions." },
+            { id: 511, unit: 5, num: 11, q: "Which architecture uses beliefs, desires, and intentions?", options: ["Layered", "BDI (Belief-Desire-Intention)", "Reflex", "Propositional"], ans: 1, exp: "The BDI (Belief-Desire-Intention) architecture models practical human reasoning using Beliefs (knowledge), Desires (goals), and Intentions (committed plans)." },
+            { id: 512, unit: 5, num: 12, q: "Which of the following is true about intelligent agents?", options: ["They only store data", "They perceive, reason, and act", "They cannot communicate", "They only follow fixed rules"], ans: 1, exp: "Intelligent agents continuously perceive their environment, reason over their knowledge/goals, and act autonomously." },
+            { id: 513, unit: 5, num: 13, q: "Which of the following is a communication language for agents?", options: ["XML", "KQML (Knowledge Query and Manipulation Language)", "Python", "SQL"], ans: 1, exp: "KQML (along with FIPA ACL) is a standard high-level Agent Communication Language designed for sharing knowledge among multi-agent systems." },
+            { id: 514, unit: 5, num: 14, q: "Agent communication is mainly based on:", options: ["Machine learning", "Speech acts", "Genetic algorithms", "Sorting"], ans: 1, exp: "Agent communication languages are grounded in Speech Act Theory (inform, request, promise, query), where utterances are treated as actions." },
+            { id: 515, unit: 5, num: 15, q: "In multi-agent systems, argumentation refers to:", options: ["Simple chatting", "Resolving conflicts by reasoning and negotiation", "Data storage", "Compiling programs"], ans: 1, exp: "Argumentation is a formal mechanism where agents exchange arguments and justifications to resolve conflicting beliefs or reach negotiation agreements." },
+            { id: 516, unit: 5, num: 16, q: "Which of the following is NOT a feature of knowledge-based agents?", options: ["Knowledge base", "Inference mechanism", "Reasoning", "Random decision making"], ans: 3, exp: "Knowledge-based agents make logical, reasoned decisions derived from their KB, rather than acting via random decision making." },
+            { id: 517, unit: 5, num: 17, q: "A propositional formula (P ∧ Q) is true only when:", options: ["P is false", "Q is false", "One is true and one is false", "Both P and Q are true"], ans: 3, exp: "A logical conjunction (P AND Q, written P ∧ Q) evaluates to True if and only if both P is True and Q is True." },
+            { id: 518, unit: 5, num: 18, q: "In propositional logic, (P ∨ Q) is false when:", options: ["Both are true", "One is true and one is false", "Both are false", "None"], ans: 2, exp: "A logical disjunction (P OR Q, written P ∨ Q) evaluates to False only when both P and Q are False." },
+            { id: 519, unit: 5, num: 19, q: "Inference rules like Modus Ponens are used in:", options: ["Model checking", "Theorem proving", "Search algorithms", "CSPs"], ans: 1, exp: "Modus Ponens (from α ⇒ β and α, infer β) is a fundamental sound rule of inference used in deductive theorem proving." },
+            { id: 520, unit: 5, num: 20, q: "Which approach checks all possible models for truth evaluation?", options: ["Theorem proving", "Model checking", "Constraint solving", "Regression"], ans: 1, exp: "Model checking (such as truth-table enumeration, DPLL, or WalkSAT) evaluates truth across possible models of the propositional variables." }
+        ];
+
+        // Complete 2-Mark and 6-Mark Subjective Questions from the PDF with Key Answer Points
+        const THEORY_BANK = [
+            // UNIT I
+            { unit: 1, marks: 2, sno: 1, bloom: "R", q: "Define AI?", a: "Artificial Intelligence (AI) is the branch of computer science concerned with building intelligent machines and agents capable of perceiving their environment, reasoning, learning from experience, and acting rationally to achieve goals." },
+            { unit: 1, marks: 2, sno: 2, bloom: "R", q: "List out any four applications of AI?", a: "1. Autonomous Vehicles (Self-driving cars)\n2. Natural Language Processing (Chatbots, Machine Translation)\n3. Healthcare Diagnostics & Expert Systems\n4. Computer Vision & Facial Recognition." },
+            { unit: 1, marks: 2, sno: 3, bloom: "U", q: "Explain History of AI?", a: "1943: McCulloch & Pitts neural model; 1950: Alan Turing's 'Computing Machinery and Intelligence' (Turing Test); 1956: John McCarthy coined 'AI' at the Dartmouth Conference; 1970s-80s: Expert Systems; 1997: Deep Blue beat Kasparov; 2010s-Present: Deep Learning & Generative AI." },
+            { unit: 1, marks: 2, sno: 4, bloom: "U", q: "Explain components of AI?", a: "The core components of AI are: 1. Learning, 2. Reasoning, 3. Problem-solving, 4. Perception (sensing the environment), and 5. Knowledge Representation & Language Understanding." },
+            { unit: 1, marks: 2, sno: 5, bloom: "U", q: "Explain Agents?", a: "An AI Agent is anything that perceives its environment through sensors and acts upon that environment through actuators. Mathematically, an agent maps any given percept sequence to an action." },
+            { unit: 1, marks: 2, sno: 6, bloom: "U", q: "Explain Rationality?", a: "Rationality means doing the right thing—selecting an action that maximizes the expected value of the performance measure, given the percept sequence to date and built-in knowledge." },
+            { unit: 1, marks: 2, sno: 7, bloom: "U", q: "Explain Rational Agent loop?", a: "The Perceive-Think-Act loop: 1. Observe environment via Sensors (Percepts), 2. Reason/Evaluate using internal state and performance measure, 3. Execute optimal action via Actuators." },
+            { unit: 1, marks: 2, sno: 8, bloom: "U", q: "Explain types of AI agents?", a: "1. Simple Reflex Agents\n2. Model-Based Reflex Agents\n3. Goal-Based Agents\n4. Utility-Based Agents\n5. Learning Agents." },
+            { unit: 1, marks: 2, sno: 9, bloom: "U", q: "Explain environments?", a: "The Task Environment (PEAS: Performance, Environment, Actuators, Sensors) is the external world in which the agent operates, classified as Observable, Deterministic, Episodic, Static, Discrete, and Single/Multi-agent." },
+            { unit: 1, marks: 2, sno: 10, bloom: "U", q: "Explain parts of AI?", a: "AI encompasses Search Algorithms, Knowledge Representation, Automated Reasoning, Machine Learning, Natural Language Processing, Computer Vision, and Robotics." },
+            { unit: 1, marks: 6, sno: 1, bloom: "U", q: "Explain applications of AI?", a: "Cover major domains: Healthcare (disease prediction, robotic surgery), Autonomous Transport (self-driving vehicles, route optimization), Finance (fraud detection, algorithmic trading), NLP (virtual assistants), Gaming (Chess, Go), and Robotics." },
+            { unit: 1, marks: 6, sno: 2, bloom: "U", q: "Explain components of AI?", a: "Detail the 5 pillars: 1. Learning (trial-and-error, supervised/unsupervised), 2. Reasoning (inductive & deductive inference), 3. Problem Solving (general & special purpose search), 4. Perception (vision, speech sensors), 5. Language Understanding." },
+            { unit: 1, marks: 6, sno: 3, bloom: "AN", q: "Explain in detail about human intelligence vs machine Intelligence?", a: "Compare across dimensions: Origin (biological consciousness vs silicon algorithms), Learning (broad experience/intuition vs data-driven training), Speed & Accuracy (machines excel at rapid numerical computation; humans excel at common sense, creativity, and emotional empathy)." },
+            { unit: 1, marks: 6, sno: 4, bloom: "U", q: "Explain types of AI?", a: "By Capability: 1. Narrow/Weak AI (task-specific like Siri), 2. General/Strong AI (human-level cognitive ability across domains), 3. Super AI (surpasses human intelligence). By Functionality: Reactive Machines, Limited Memory, Theory of Mind, Self-Aware AI." },
+            { unit: 1, marks: 6, sno: 5, bloom: "R", q: "Explain types of AI agents?", a: "Draw and explain the 5 architectures: Simple Reflex (condition-action rules), Model-Based (tracks internal state), Goal-Based (considers future goal states), Utility-Based (maximizes happiness/utility function), and Learning Agent (Critic, Learning Element, Problem Generator, Performance Element)." },
+            { unit: 1, marks: 6, sno: 6, bloom: "U", q: "Explain about Environments?", a: "Define PEAS framework (Performance measure, Environment, Actuators, Sensors) with examples (e.g., Automated Taxi Driver, Medical Diagnosis System) and explain how environment properties dictate agent design." },
+            { unit: 1, marks: 6, sno: 7, bloom: "U", q: "Explain about any 3 types of nature of environments in AI?", a: "1. Fully Observable vs Partially Observable (Chess vs Poker)\n2. Deterministic vs Stochastic (Crossword vs Taxi driving)\n3. Static vs Dynamic (Sudoku vs Autonomous driving)\n4. Discrete vs Continuous." },
+            { unit: 1, marks: 6, sno: 8, bloom: "U", q: "Explain Structure of Agents?", a: "Agent = Architecture + Agent Program. Explain how physical sensors/actuators (Architecture) interface with the Agent Program (table-driven, reflex, goal-based, utility-based implementations)." },
+
+            // UNIT II
+            { unit: 2, marks: 2, sno: 1, bloom: "U", q: "Explain search Algorithm?", a: "A search algorithm takes a problem (initial state, actions, transition model, goal test, path cost) as input and returns a solution in the form of an action sequence reaching the goal state." },
+            { unit: 2, marks: 2, sno: 2, bloom: "R", q: "List out the two categories of search strategies?", a: "1. Uninformed Search (Blind Search) – e.g., BFS, DFS, UCS, Bidirectional.\n2. Informed Search (Heuristic Search) – e.g., Greedy Best-First Search, A* Search." },
+            { unit: 2, marks: 2, sno: 3, bloom: "R", q: "List out the criteria of evaluating search strategies?", a: "1. Completeness (Does it always find a solution if one exists?)\n2. Time Complexity (Number of nodes generated)\n3. Space Complexity (Maximum nodes in memory)\n4. Optimality (Does it find the least-cost solution?)." },
+            { unit: 2, marks: 2, sno: 4, bloom: "R", q: "List any two advantages of BFS?", a: "1. Guaranteed to be Complete (if branching factor b is finite).\n2. Guaranteed to find the shortest/optimal path when all step costs are equal." },
+            { unit: 2, marks: 2, sno: 5, bloom: "R", q: "List any 2 Applications of AI Search?", a: "1. Route finding and GPS Navigation (shortest path)\n2. Puzzle solving (8-puzzle, Rubik's cube) and Game AI." },
+            { unit: 2, marks: 2, sno: 6, bloom: "R", q: "Write the Time complexity of bidirectional search?", a: "The time complexity of Bidirectional Search (using BFS in both directions) is O(b^(d/2)), which is significantly faster than O(b^d)." },
+            { unit: 2, marks: 2, sno: 7, bloom: "R", q: "List the benefits of A* search?", a: "1. It is both Complete and Optimal (with an admissible/consistent heuristic).\n2. It is optimally efficient—no other optimal algorithm is guaranteed to expand fewer nodes." },
+            { unit: 2, marks: 2, sno: 8, bloom: "R", q: "List the advantages of A* search?", a: "Combines the accuracy of Uniform Cost Search g(n) with the speed of heuristic guidance h(n), pruning unnecessary search paths while guaranteeing the minimum-cost solution." },
+            { unit: 2, marks: 2, sno: 9, bloom: "R", q: "List the features of bidirectional search?", a: "Simultaneously searches forward from the initial state and backward from the goal state; terminates when the two frontiers intersect; reduces time and space complexity to O(b^(d/2))." },
+            { unit: 2, marks: 2, sno: 10, bloom: "U", q: "Explain disadvantages of BFS?", a: "High memory requirement (exponential space complexity O(b^d)) because it keeps every generated node in memory; slow if the goal is deep in the tree." },
+            { unit: 2, marks: 6, sno: 1, bloom: "U", q: "Explain Breadth first search algorithm with example?", a: "Explain FIFO queue mechanism, level-by-level traversal, step-by-step tree trace (A -> B, C -> D, E, F, G), Completeness: Yes, Optimal: Yes (unit step cost), Time & Space Complexity: O(b^d)." },
+            { unit: 2, marks: 6, sno: 2, bloom: "U", q: "Explain uniform cost search algorithm?", a: "Explain Priority Queue ordered by path cost g(n). Expands least-cost node rather than shallowest node. Handles varying step costs. Complete and Optimal if step costs ≥ ε > 0." },
+            { unit: 2, marks: 6, sno: 3, bloom: "U", q: "Explain in detail about Depth first search algorithm with example?", a: "Explain LIFO Stack / recursion mechanism, explores deepest node first and backtracks at dead ends. Space complexity is linear O(bm), Time complexity O(b^m). Not optimal and incomplete in infinite spaces." },
+            { unit: 2, marks: 6, sno: 4, bloom: "U", q: "Explain in detail about Bidirectional search with algorithm?", a: "Maintains two queues (Forward from Start, Backward from Goal). Checks intersection at each step. Show how b^(d/2) + b^(d/2) is vastly smaller than b^d." },
+            { unit: 2, marks: 6, sno: 5, bloom: "APP", q: "Explain Heuristic search strategies?", a: "Define heuristic function h(n), Admissibility (h(n) ≤ h*(n)), Consistency (triangle inequality), Greedy Best-First Search f(n)=h(n), and A* Search f(n)=g(n)+h(n) with 8-puzzle Manhattan distance example." },
+            { unit: 2, marks: 6, sno: 6, bloom: "U", q: "Explain about Best first search algorithm?", a: "Best-First Search selects a node for expansion based on an evaluation function f(n) using a priority queue. Detail Greedy Best-First Search where f(n) = h(n)." },
+            { unit: 2, marks: 6, sno: 7, bloom: "APP", q: "Explain in detail about A* search algorithm?", a: "Formula f(n) = g(n) + h(n). Explain OPEN and CLOSED lists, step-by-step shortest path calculation on a weighted graph, and conditions for optimality (Admissibility & Consistency)." },
+            { unit: 2, marks: 6, sno: 8, bloom: "E", q: "Explain (i) advantages and disadvantages of A* search (ii) Application of A* search", a: "Advantages: Complete, optimal, optimally efficient. Disadvantages: Memory-bound (O(b^d) space), performance depends heavily on heuristic quality. Applications: Video game pathfinding, robotics navigation, network routing." },
+
+            // UNIT III
+            { unit: 3, marks: 2, sno: 1, bloom: "R", q: "List the types of knowledge stored in AI?", a: "1. Declarative Knowledge (facts & assertions)\n2. Procedural Knowledge (rules & how-to steps)\n3. Meta-knowledge (knowledge about knowledge)\n4. Heuristic Knowledge (rules of thumb)\n5. Structural Knowledge (concept relationships)." },
+            { unit: 3, marks: 2, sno: 2, bloom: "R", q: "What are the levels used in knowledge based agents?", a: "1. Knowledge Level (epistemic level - what the agent knows and its goals)\n2. Logical Level (how knowledge is encoded in formal sentences)\n3. Implementation Level (data structures and algorithms running on physical architecture)." },
+            { unit: 3, marks: 2, sno: 3, bloom: "U", q: "Explain logic in AI?", a: "Logic is a formal language with defined Syntax (valid symbol arrangements) and Semantics (truth of sentences in possible worlds/models) used by AI for sound automated reasoning and entailment." },
+            { unit: 3, marks: 2, sno: 4, bloom: "R", q: "What are the key components used in ontology?", a: "1. Categories / Classes (sets of objects)\n2. Individuals / Objects (instances)\n3. Relations & Attributes\n4. Events, Time, and Axioms/Constraints." },
+            { unit: 3, marks: 2, sno: 5, bloom: "R", q: "Define Events?", a: "Events are spatiotemporal chunks of activity or occurrences that happen over time and cause transitions between states of the world." },
+            { unit: 3, marks: 2, sno: 6, bloom: "R", q: "List the types of events?", a: "1. Atomic/Instantaneous Events\n2. Extended/Durative Events (processes/intervals)\n3. Sub-events and Composite Events\n4. Mental Events." },
+            { unit: 3, marks: 2, sno: 7, bloom: "R", q: "Define Mental events?", a: "Mental events refer to internal cognitive occurrences within an agent's mind, such as inferring a new belief, perceiving a fact, deciding on an intention, or forgetting." },
+            { unit: 3, marks: 2, sno: 8, bloom: "R", q: "Define Mental Objects?", a: "Mental objects are attitudes held by an agent toward propositions—such as Beliefs, Knowledge, Desires, and Intentions—stored and reasoned over in a formal knowledge base." },
+            { unit: 3, marks: 2, sno: 9, bloom: "R", q: "List the Applications of Hill Climbing in AI?", a: "1. Traveling Salesperson Problem (TSP) optimization\n2. N-Queens Problem & CSP Min-Conflicts\n3. Circuit design, Job-shop scheduling, and Neural Network weight tuning." },
+            { unit: 3, marks: 2, sno: 10, bloom: "U", q: "Explain the advantages of Genetic algorithm in AI?", a: "1. Searches from a population of points rather than a single state (avoids local optima).\n2. Does not require derivative/gradient information.\n3. Highly parallelizable for complex optimization problems." },
+            { unit: 3, marks: 6, sno: 1, bloom: "U", q: "Give a detailed notes on knowledge based agents?", a: "Explain KB + Inference Engine architecture, the TELL and ASK operations, the generic `KB-AGENT(percept)` program loop, and the declarative approach to building agents." },
+            { unit: 3, marks: 6, sno: 2, bloom: "U", q: "Explain in detail about a very simple propositional logic?", a: "Cover Syntax (atomic propositions P, Q; logical connectives ¬, ∧, ∨, ⇒, ⇔), Semantics (Truth tables for all 5 connectives), Validity, Satisfiability, Entailment (KB ⊨ α), and Inference rules (Modus Ponens, And-Elimination, Resolution)." },
+            { unit: 3, marks: 6, sno: 3, bloom: "U", q: "Explain Ontological engineering?", a: "Explain upper ontologies, representing general concepts (Categories, Measures, Composite Objects, Time, Space, Change/Events) so knowledge can be reused across diverse complex domains." },
+            { unit: 3, marks: 6, sno: 4, bloom: "U", q: "Briefly explain (i) mental events and mental objects (ii) Reasoning system for categories", a: "(i) Propositional attitudes (Believes, Knows, Wants), referential opacity, and knowledge updates. (ii) Semantic Networks (ISA/AKO links, inheritance) and Description Logics (subsumption and classification)." },
+            { unit: 3, marks: 6, sno: 5, bloom: "U", q: "Briefly explain (i) categories and objects (ii) Events", a: "(i) Taxonomies, subclass relations (Subset), instance relations (Member), disjoint/exhaustive decompositions, physical composition (PartOf). (ii) Event calculus:Happens(e, t), Initiates(e, f, t), Terminates(e, f, t), Clipped." },
+            { unit: 3, marks: 6, sno: 6, bloom: "APP", q: "Explain Hill climbing algorithm?", a: "Greedy local search algorithm loop. State-space landscape diagram showing Global Maximum, Local Maximum, Ridges, and Plateaus/Shoulders. Variants: Stochastic, First-choice, and Random-restart hill climbing." },
+            { unit: 3, marks: 6, sno: 7, bloom: "APP", q: "Explain local beam search algorithm?", a: "Maintains k states simultaneously. At each step, generates all successors of all k states; if any is a goal, halts; otherwise selects the k best successors from the complete pool. Also mention Stochastic Beam Search." },
+            { unit: 3, marks: 6, sno: 8, bloom: "APP", q: "Explain genetic algorithm?", a: "Detail the evolutionary cycle: 1. Initial Population encoding (chromosomes), 2. Fitness Function evaluation, 3. Selection (Roulette wheel/Tournament), 4. Crossover (single-point recombination), 5. Mutation (random bit/gene flip)." },
+
+            // UNIT IV
+            { unit: 4, marks: 2, sno: 1, bloom: "R", q: "Mention the two types of technique used in Game playing algorithm in AI?", a: "1. Minimax Search Algorithm (exhaustive optimal adversarial search)\n2. Alpha-Beta Pruning (branch-and-bound optimization of Minimax)." },
+            { unit: 4, marks: 2, sno: 2, bloom: "R", q: "List the two types of application of Game theory?", a: "1. Board & Turn-based Strategy Games (Chess, Checkers, Go, Tic-Tac-Toe)\n2. Economic Negotiation, Auctions, Cyber-defense, and Multi-agent Decision Making." },
+            { unit: 4, marks: 2, sno: 3, bloom: "R", q: "What are the two types of components used in Constraint network?", a: "1. Nodes (representing Variables X with their Domains D)\n2. Arcs / Edges (representing Constraints C restricting legal combinations of variable values)." },
+            { unit: 4, marks: 2, sno: 4, bloom: "R", q: "Define binary constraints?", a: "A binary constraint relates two variables and restricts the pairs of values they can simultaneously take (e.g., X ≠ Y in Australia Map Coloring)." },
+            { unit: 4, marks: 2, sno: 5, bloom: "R", q: "Define non-binary constraints?", a: "A non-binary (or higher-order/global) constraint involves three or more variables simultaneously (e.g., AllDiff(A, B, C, D) in Sudoku or column addition in Cryptarithmetic)." },
+            { unit: 4, marks: 2, sno: 6, bloom: "U", q: "Define constraint propagation?", a: "Constraint propagation is the process of using constraints to reduce the legal domains of variables before or during search, enforcing local consistency (such as Node or Arc Consistency)." },
+            { unit: 4, marks: 2, sno: 7, bloom: "U", q: "List the advantages of backtracking search?", a: "1. Complete (guaranteed to find a solution if one exists).\n2. Requires very low memory O(n) since it uses Depth-First Search.\n3. Easily enhanced with heuristics (MRV, Degree, LCV) and Forward Checking." },
+            { unit: 4, marks: 2, sno: 8, bloom: "U", q: "List the disadvantages of backtracking search?", a: "1. Exponential worst-case time complexity.\n2. Suffers from 'thrashing' (repeatedly failing for the same constraint violation in different branches) without intelligent backjumping." },
+            { unit: 4, marks: 2, sno: 9, bloom: "U", q: "List the advantages of local search for CSPs?", a: "1. Uses constant O(1) memory.\n2. Can solve massive CSPs (like 1,000,000-Queens) in seconds using the Min-Conflicts heuristic.\n3. Works well in online/dynamic environments to repair schedules." },
+            { unit: 4, marks: 2, sno: 10, bloom: "U", q: "List the disadvantages of local search for CSPs?", a: "1. Incomplete (cannot prove that no solution exists for an unsatisfiable CSP).\n2. Can get stuck in local minima / plateaus of conflicted assignments." },
+            { unit: 4, marks: 6, sno: 1, bloom: "U", q: "Explain Mini max search algorithm?", a: "Define MAX and MIN players, Game Tree (Initial state, Legal moves, Terminal Test, Utility function). Show bottom-up propagation where MAX chooses max(children) and MIN chooses min(children). Include pseudocode and tree example." },
+            { unit: 4, marks: 6, sno: 2, bloom: "A", q: "Explain Alpha beta Search algorithm?", a: "Explain α (best highest value found so far for MAX) and β (best lowest value found so far for MIN). Prune whenever α ≥ β. Show how good move ordering reduces time complexity from O(b^m) to O(b^(m/2))." },
+            { unit: 4, marks: 6, sno: 3, bloom: "U", q: "Briefly give an introduction about CSPs?", a: "Define CSP tuple (X, D, C). Explain state representation, consistent & complete assignments, Australia Map Coloring example (WA, NT, Q, NSW, V, SA, T with domain {Red, Green, Blue}), and varieties of constraints." },
+            { unit: 4, marks: 6, sno: 4, bloom: "U", q: "Explain binary and non-binary constraint in CSPs?", a: "Define Unary, Binary, and Higher-order (Global) constraints. Show how any non-binary constraint can be transformed into binary constraints using dual-graph or hidden/auxiliary variable representations." },
+            { unit: 4, marks: 6, sno: 5, bloom: "APP", q: "Explain in detail about Constraint propagation with example?", a: "Explain Node Consistency, Arc Consistency (AC-3 queue algorithm), Path Consistency, and Forward Checking. Walk through domain reduction on the Map Coloring or Sudoku example." },
+            { unit: 4, marks: 6, sno: 6, bloom: "APP", q: "Explain in detail about backtracking search for CSP procedure with example?", a: "Provide `BACKTRACKING-SEARCH(csp)` pseudocode. Detail variable selection heuristics (MRV & Degree Heuristic), value ordering heuristic (Least Constraining Value - LCV), and interleaving search with inference (MAC)." },
+            { unit: 4, marks: 6, sno: 7, bloom: "APP", q: "Explain the local search for CSPs procedure with example?", a: "Complete-state formulation: assign a value to every variable randomly, then iteratively pick a conflicted variable and select the value that violates the fewest constraints (`MIN-CONFLICTS` algorithm) demonstrated on the 4-Queens or 8-Queens problem." },
+            { unit: 4, marks: 6, sno: 8, bloom: "APP", q: "Explain in detail about constraint network?", a: "Explain Constraint Graph structure: independent subproblems (connected components), Tree-structured CSPs (solvable in O(nd^2) linear time using topological sort), and Cutset Conditioning / Tree Decomposition for nearly tree-structured networks." },
+
+            // UNIT V
+            { unit: 5, marks: 2, sno: 1, bloom: "R", q: "What are the main components of a Knowledge-Based Agent?", a: "1. Knowledge Base (KB) – repository of domain facts and rules\n2. Inference Engine (Mechanism) – derives new conclusions from the KB using logical rules." },
+            { unit: 5, marks: 2, sno: 2, bloom: "R", q: "Define Propositional Logic.", a: "Propositional Logic is a formal declarative logic where statements are composed of atomic propositions (True/False) connected by logical operators (NOT ¬, AND ∧, OR ∨, IMPLIES ⇒, IFF ⇔)." },
+            { unit: 5, marks: 2, sno: 3, bloom: "U", q: "Give an example of a propositional logic statement.", a: "Let P = 'It is raining' and Q = 'The ground is wet'. The implication statement (P ⇒ Q) means 'If it is raining, then the ground is wet'." },
+            { unit: 5, marks: 2, sno: 4, bloom: "R", q: "Name one common method for propositional theorem proving.", a: "Resolution Refutation (using Conjunctive Normal Form - CNF) or Forward/Backward Chaining with Horn Clauses." },
+            { unit: 5, marks: 2, sno: 5, bloom: "U", q: "What is the main drawback of propositional model checking?", a: "Truth-table enumeration requires checking 2^n models for n propositional symbols, leading to exponential O(2^n) time complexity in the worst case." },
+            { unit: 5, marks: 2, sno: 6, bloom: "U", q: "Give an example of an environment where propositional logic agents are used.", a: "The Wumpus World grid environment (inferring safe squares vs pits/Wumpus from breeze and stench percepts) or Minesweeper." },
+            { unit: 5, marks: 2, sno: 7, bloom: "U", q: "What is agent communication?", a: "Agent communication is the intentional exchange of structured messages (grounded in Speech Act Theory) between autonomous agents to share knowledge, coordinate plans, or negotiate." },
+            { unit: 5, marks: 2, sno: 8, bloom: "R", q: "Name one common language for agent communication.", a: "KQML (Knowledge Query and Manipulation Language) or FIPA ACL (Agent Communication Language)." },
+            { unit: 5, marks: 2, sno: 9, bloom: "APP", q: "Give one application of argumentation among agents.", a: "Multi-agent automated e-commerce negotiation, collaborative medical diagnosis, or legal dispute resolution systems." },
+            { unit: 5, marks: 2, sno: 10, bloom: "R", q: "What are the layers of intelligent agent architecture?", a: "In a hybrid/layered architecture (like TouringMachines or InteRRaP): 1. Reactive Layer (low-level reflexes), 2. Deliberative/Planning Layer (local goals), and 3. Social/Cooperative Modeling Layer (multi-agent interaction)." },
+            { unit: 5, marks: 6, sno: 1, bloom: "U", q: "Explain the working of a Knowledge-Based Agent with a neat diagram.", a: "Include architecture block diagram (Sensors -> TELL KB -> Inference Engine <-> Knowledge Base -> ASK KB -> Actuators). Explain how the agent updates percepts, infers the current world state, selects an optimal action, and records the executed action." },
+            { unit: 5, marks: 6, sno: 2, bloom: "U", q: "Describe the syntax and semantics of Propositional Logic with examples.", a: "Define BNF grammar for atomic & complex sentences (¬, ∧, ∨, ⇒, ⇔), precedence order, truth tables defining semantics for all 5 operators, and illustrate logical equivalence (De Morgan's laws, contrapositive)." },
+            { unit: 5, marks: 6, sno: 3, bloom: "APP", q: "What is Propositional Model Checking? Explain with an example.", a: "Explain checking KB ⊨ α by enumerating truth assignments (`TT-ENTAILS?`) or backtracking SAT solvers: DPLL (Early termination, Pure symbol heuristic, Unit clause heuristic) and WalkSAT local search." },
+            { unit: 5, marks: 6, sno: 4, bloom: "U", q: "Explain the different types of architectures for intelligent agents.", a: "Detail 4 main architectures: 1. Logic-based (symbolic deduction), 2. Reactive (Subsumption architecture without symbolic world model), 3. BDI (Belief-Desire-Intention practical reasoning), 4. Layered (Horizontal and Vertical two-pass hybrid architectures)." },
+            { unit: 5, marks: 6, sno: 5, bloom: "U", q: "What are the different types of communication among agents? Explain.", a: "Explain Speech Act Theory (Illocutionary vs Perlocutionary acts), performatives (Inform, Query, Request, Propose, Accept/Reject), KQML/FIPA-ACL message structure (sender, receiver, ontology, content), and Contract Net Protocol." },
+            { unit: 5, marks: 6, sno: 6, bloom: "APP", q: "What is argumentation in multi-agent systems? Explain with an example.", a: "Explain Dung's Abstract Argumentation Framework (Arguments + Attack relation), defeat status (undefeated/grounded extensions), persuasion dialogues, and negotiation example where two agents justify conflicting plans." },
+            { unit: 5, marks: 6, sno: 7, bloom: "E", q: "Discuss the advantages and limitations of Knowledge-Based Agents.", a: "Advantages: Explainable reasoning, easy to update domain knowledge declaratively, handles novel situations via inference. Limitations: Propositional combinatorial explosion, difficulty representing uncertainty, computational overhead of theorem proving." },
+            { unit: 5, marks: 6, sno: 8, bloom: "APP", q: "How do propositional logic agents work? Explain with an example.", a: "Demonstrate with the Wumpus World agent: encoding physics rules (B1,1 ⇔ (P1,2 ∨ P2,1)), TELLing percepts (¬B1,1), and using inference/model checking to prove (¬P1,2 ∧ ¬P2,1) so the agent safely moves forward." }
+        ];
+
+        const app = {
+            currentView: 'dashboard',
+            configUnit: 'all',
+            configMode: 'practice',
+            explorerShowAllAnswers: false,
+
+            // Session tracking (In-memory)
+            sessionStats: {
+                masteredIds: new Set(),
+                totalAttempts: 0,
+                totalCorrect: 0,
+                unitProgress: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+            },
+
+            // Active quiz state
+            quiz: {
+                active: false,
+                mode: 'practice', // 'practice' | 'exam'
+                unitLabel: 'All Units',
+                questions: [],
+                currentIndex: 0,
+                userAnswers: {}, // questionId -> selectedOptionIndex
+                flagged: new Set(), // questionId
+                secondsElapsed: 0,
+                timerInterval: null
+            },
+
+            init() {
+                this.renderDashboard();
+                this.renderExplorer();
+                this.renderTheory();
+                this.setupKeyboardShortcuts();
+            },
+
+            showView(viewName) {
+                if (this.quiz.active && viewName !== 'quiz' && viewName !== 'results') {
+                    this.openConfirmModal(
+                        "Leave Active Test?",
+                        "Your current self-test is still in progress. Are you sure you want to exit?",
+                        () => {
+                            this.stopTimer();
+                            this.quiz.active = false;
+                            this.switchViewDOM(viewName);
+                        }
+                    );
+                    return;
+                }
+                this.switchViewDOM(viewName);
+            },
+
+            switchViewDOM(viewName) {
+                this.currentView = viewName;
+                const views = ['dashboard', 'quiz', 'results', 'Explorer', 'theory'];
+                views.forEach(v => {
+                    const el = document.getElementById(`view-${v}`);
+                    if (el) el.classList.toggle('hidden', v !== viewName);
+                });
+
+                // Update top navigation highlight
+                ['dashboard', 'Explorer', 'theory'].forEach(navId => {
+                    const btn = document.getElementById(`nav-${navId}`);
+                    if (!btn) return;
+                    if (navId === viewName) {
+                        btn.className = "nav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-indigo-600 text-white shadow-md shadow-indigo-600/25 transition";
+                    } else {
+                        btn.className = "nav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 transition";
+                    }
+                });
+
+                if (viewName === 'dashboard') this.renderDashboard();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            renderDashboard() {
+                document.getElementById('stat-mastered').textContent = `${this.sessionStats.masteredIds.size} / 100`;
+                const acc = this.sessionStats.totalAttempts > 0
+                    ? Math.round((this.sessionStats.totalCorrect / this.sessionStats.totalAttempts) * 100)
+                    : 0;
+                document.getElementById('stat-accuracy').textContent = `${acc}%`;
+
+                const grid = document.getElementById('unit-cards-grid');
+                grid.innerHTML = UNITS_META.map(u => {
+                    const unitQuestions = MCQ_BANK.filter(q => q.unit === u.id);
+                    const masteredInUnit = unitQuestions.filter(q => this.sessionStats.masteredIds.has(q.id)).length;
+                    const pct = Math.round((masteredInUnit / unitQuestions.length) * 100);
+
+                    return `
+                        <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between space-y-5 hover:border-indigo-500/40 transition group">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">${u.code} • ${u.co}</span>
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${u.color} flex items-center justify-center text-white shadow-md">
+                                        <i class="ph-bold ${u.icon} text-xl"></i>
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-lg leading-snug group-hover:text-indigo-400 transition">${u.title}</h4>
+                                <p class="text-xs text-slate-400">20 One-Mark MCQs • 10 Two-Mark & 8 Six-Mark Theory Questions</p>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-slate-400">Unit Mastery</span>
+                                        <span class="font-bold text-indigo-400">${masteredInUnit}/20 (${pct}%)</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r ${u.color}" style="width: ${pct}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2.5 pt-1">
+                                    <button onclick="app.quickStartUnit(${u.id}, 'practice')" class="px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 transition">
+                                        <i class="ph-bold ph-lightning"></i> Practice
+                                    </button>
+                                    <button onclick="app.quickStartUnit(${u.id}, 'exam')" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-700 transition">
+                                        <i class="ph-bold ph-timer text-emerald-400"></i> Self-Test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            openTestConfigurator(unit = 'all', mode = 'practice') {
+                this.configUnit = String(unit);
+                document.getElementById('config-unit').value = this.configUnit;
+                document.getElementById('config-count').value = unit === 'all' ? '100' : '20';
+                this.setModeChoice(mode);
+                document.getElementById('test-config-modal').classList.remove('hidden');
+            },
+
+            closeTestConfigurator() {
+                document.getElementById('test-config-modal').classList.add('hidden');
+            },
+
+            setModeChoice(mode) {
+                this.configMode = mode;
+                const pBtn = document.getElementById('mode-btn-practice');
+                const eBtn = document.getElementById('mode-btn-exam');
+                if (mode === 'practice') {
+                    pBtn.className = "p-3.5 rounded-xl border-2 border-indigo-500 bg-indigo-500/10 text-left transition";
+                    eBtn.className = "p-3.5 rounded-xl border-2 border-slate-700 bg-slate-800/50 text-left transition";
+                } else {
+                    eBtn.className = "p-3.5 rounded-xl border-2 border-indigo-500 bg-indigo-500/10 text-left transition";
+                    pBtn.className = "p-3.5 rounded-xl border-2 border-slate-700 bg-slate-800/50 text-left transition";
+                }
+            },
+
+            quickStartUnit(unitId, mode) {
+                const pool = MCQ_BANK.filter(q => q.unit === Number(unitId));
+                const meta = UNITS_META.find(u => u.id === Number(unitId));
+                this.launchQuizInstance(pool, mode, `${meta.code}: ${meta.title}`);
+            },
+
+            startConfiguredTest() {
+                const unitVal = document.getElementById('config-unit').value;
+                const countVal = parseInt(document.getElementById('config-count').value, 10);
+                const shuffleVal = document.getElementById('config-shuffle').value;
+
+                let pool = unitVal === 'all'
+                    ? [...MCQ_BANK]
+                    : MCQ_BANK.filter(q => q.unit === parseInt(unitVal, 10));
+
+                if (shuffleVal === 'shuffle') {
+                    pool = pool.sort(() => Math.random() - 0.5);
+                }
+
+                pool = pool.slice(0, Math.min(countVal, pool.length));
+                const label = unitVal === 'all'
+                    ? `All Units (${pool.length} MCQs)`
+                    : `${UNITS_META.find(u => u.id === parseInt(unitVal, 10)).code} (${pool.length} MCQs)`;
+
+                this.closeTestConfigurator();
+                this.launchQuizInstance(pool, this.configMode, label);
+            },
+
+            launchQuizInstance(questionsArray, mode, label) {
+                this.stopTimer();
+                this.quiz = {
+                    active: true,
+                    mode: mode,
+                    unitLabel: label,
+                    questions: questionsArray,
+                    currentIndex: 0,
+                    userAnswers: {},
+                    flagged: new Set(),
+                    secondsElapsed: 0,
+                    timerInterval: null
+                };
+
+                document.getElementById('quiz-unit-badge').textContent = label;
+                document.getElementById('quiz-mode-title').textContent = mode === 'practice'
+                    ? 'Practice Mode (Instant Answer Check)'
+                    : 'Exam Simulation Mode (Timed)';
+
+                this.switchViewDOM('quiz');
+                this.renderCurrentQuestion();
+                this.startTimer();
+            },
+
+            startTimer() {
+                const timerEl = document.getElementById('quiz-timer');
+                timerEl.textContent = "00:00";
+                this.quiz.timerInterval = setInterval(() => {
+                    this.quiz.secondsElapsed++;
+                    timerEl.textContent = this.formatTime(this.quiz.secondsElapsed);
+                }, 1000);
+            },
+
+            stopTimer() {
+                if (this.quiz.timerInterval) {
+                    clearInterval(this.quiz.timerInterval);
+                    this.quiz.timerInterval = null;
+                }
+            },
+
+            formatTime(totalSec) {
+                const mins = Math.floor(totalSec / 60);
+                const secs = totalSec % 60;
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            },
+
+            renderCurrentQuestion() {
+                const qObj = this.quiz.questions[this.quiz.currentIndex];
+                const total = this.quiz.questions.length;
+                const idx = this.quiz.currentIndex;
+
+                document.getElementById('quiz-progress-text').textContent = `Question ${idx + 1} of ${total} (Unit ${qObj.unit} • Q#${qObj.num})`;
+                document.getElementById('quiz-progress-bar').style.width = `${((idx + 1) / total) * 100}%`;
+                document.getElementById('quiz-question-text').textContent = `${idx + 1}. ${qObj.q}`;
+
+                // Update Flag button
+                const flagBtn = document.getElementById('flag-btn');
+                const isFlagged = this.quiz.flagged.has(qObj.id);
+                if (isFlagged) {
+                    flagBtn.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 transition";
+                    flagBtn.innerHTML = `<i class="ph-fill ph-bookmark-simple"></i> <span>Flagged</span>`;
+                } else {
+                    flagBtn.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition";
+                    flagBtn.innerHTML = `<i class="ph-bold ph-bookmark-simple"></i> <span>Flag for Review</span>`;
+                }
+
+                // Render Options
+                const selectedAns = this.quiz.userAnswers[qObj.id];
+                const hasAnswered = selectedAns !== undefined;
+                const letters = ['A', 'B', 'C', 'D'];
+
+                const optsContainer = document.getElementById('quiz-options-container');
+                optsContainer.innerHTML = qObj.options.map((optText, oIdx) => {
+                    let btnStyle = "border-slate-700/80 bg-slate-900/70 hover:border-indigo-500/60 hover:bg-slate-800/80 text-slate-200";
+                    let badgeStyle = "bg-slate-800 text-slate-300";
+                    let iconHTML = "";
+
+                    if (hasAnswered) {
+                        if (this.quiz.mode === 'practice') {
+                            // Reveal right/wrong immediately
+                            if (oIdx === qObj.ans) {
+                                btnStyle = "border-emerald-500 bg-emerald-500/15 text-emerald-200";
+                                badgeStyle = "bg-emerald-500 text-slate-950 font-extrabold";
+                                iconHTML = `<i class="ph-fill ph-check-circle text-emerald-400 text-xl"></i>`;
+                            } else if (oIdx === selectedAns && selectedAns !== qObj.ans) {
+                                btnStyle = "border-rose-500 bg-rose-500/15 text-rose-200";
+                                badgeStyle = "bg-rose-500 text-white font-extrabold";
+                                iconHTML = `<i class="ph-fill ph-x-circle text-rose-400 text-xl"></i>`;
+                            } else {
+                                btnStyle = "border-slate-800 bg-slate-900/40 text-slate-500 opacity-70";
+                            }
+                        } else {
+                            // Exam mode: only highlight selected choice
+                            if (oIdx === selectedAns) {
+                                btnStyle = "border-indigo-500 bg-indigo-500/20 text-white shadow-md shadow-indigo-500/10";
+                                badgeStyle = "bg-indigo-500 text-white font-bold";
+                                iconHTML = `<i class="ph-fill ph-check-circle text-indigo-400 text-xl"></i>`;
+                            }
+                        }
+                    }
+
+                    return `
+                        <button
+                            onclick="app.selectOption(${oIdx})"
+                            class="option-btn w-full p-4 rounded-2xl border-2 text-left flex items-center justify-between gap-4 ${btnStyle}">
+                            <div class="flex items-center gap-3.5">
+                                <span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${badgeStyle}">${letters[oIdx]}</span>
+                                <span class="text-sm sm:text-base font-medium">${optText}</span>
+                            </div>
+                            ${iconHTML}
+                        </button>
+                    `;
+                }).join('');
+
+                // Explanation box in Practice Mode
+                const expBox = document.getElementById('quiz-explanation-box');
+                if (this.quiz.mode === 'practice' && hasAnswered) {
+                    expBox.classList.remove('hidden');
+                    document.getElementById('quiz-explanation-text').textContent = qObj.exp;
+                } else {
+                    expBox.classList.add('hidden');
+                }
+
+                // Prev / Next buttons
+                document.getElementById('btn-prev').disabled = idx === 0;
+                const nextBtn = document.getElementById('btn-next');
+                if (idx === total - 1) {
+                    nextBtn.innerHTML = `<span>Finish Test</span> <i class="ph-bold ph-flag-checkered"></i>`;
+                } else {
+                    nextBtn.innerHTML = `<span>Next</span> <i class="ph-bold ph-caret-right"></i>`;
+                }
+
+                this.renderPalette();
+            },
+
+            selectOption(optionIdx) {
+                const qObj = this.quiz.questions[this.quiz.currentIndex];
+                // In practice mode, lock answer after first click to preserve authentic self-testing
+                if (this.quiz.mode === 'practice' && this.quiz.userAnswers[qObj.id] !== undefined) {
+                    return;
+                }
+                this.quiz.userAnswers[qObj.id] = optionIdx;
+                this.renderCurrentQuestion();
+            },
+
+            toggleFlagCurrent() {
+                const qObj = this.quiz.questions[this.quiz.currentIndex];
+                if (this.quiz.flagged.has(qObj.id)) {
+                    this.quiz.flagged.delete(qObj.id);
+                } else {
+                    this.quiz.flagged.add(qObj.id);
+                }
+                this.renderCurrentQuestion();
+            },
+
+            prevQuestion() {
+                if (this.quiz.currentIndex > 0) {
+                    this.quiz.currentIndex--;
+                    this.renderCurrentQuestion();
+                }
+            },
+
+            nextQuestion() {
+                if (this.quiz.currentIndex < this.quiz.questions.length - 1) {
+                    this.quiz.currentIndex++;
+                    this.renderCurrentQuestion();
+                } else {
+                    this.finishQuiz();
+                }
+            },
+
+            jumpToQuestion(index) {
+                this.quiz.currentIndex = index;
+                this.renderCurrentQuestion();
+            },
+
+            renderPalette() {
+                const answeredCount = Object.keys(this.quiz.userAnswers).length;
+                document.getElementById('palette-answered-count').textContent = `${answeredCount} / ${this.quiz.questions.length} Answered`;
+
+                const grid = document.getElementById('quiz-palette-grid');
+                grid.innerHTML = this.quiz.questions.map((q, idx) => {
+                    const isCurrent = idx === this.quiz.currentIndex;
+                    const ans = this.quiz.userAnswers[q.id];
+                    const isFlagged = this.quiz.flagged.has(q.id);
+
+                    let colorClass = "bg-slate-800 text-slate-300 border-slate-700";
+                    if (ans !== undefined) {
+                        if (this.quiz.mode === 'practice') {
+                            colorClass = ans === q.ans
+                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50"
+                                : "bg-rose-500/20 text-rose-300 border-rose-500/50";
+                        } else {
+                            colorClass = "bg-emerald-500 text-slate-950 font-bold border-emerald-400";
+                        }
+                    }
+                    if (isFlagged) {
+                        colorClass = "bg-amber-500/30 text-amber-200 border-amber-400";
+                    }
+                    const ringClass = isCurrent ? "ring-2 ring-indigo-400 scale-105" : "";
+
+                    return `
+                        <button onclick="app.jumpToQuestion(${idx})" class="h-9 rounded-xl border text-xs font-semibold transition ${colorClass} ${ringClass}">
+                            ${idx + 1}
+                        </button>
+                    `;
+                }).join('');
+            },
+
+            confirmExitQuiz() {
+                this.showView('dashboard');
+            },
+
+            finishQuiz() {
+                this.stopTimer();
+                this.quiz.active = false;
+
+                const total = this.quiz.questions.length;
+                let correct = 0;
+                let wrong = 0;
+
+                this.quiz.questions.forEach(q => {
+                    const userChoice = this.quiz.userAnswers[q.id];
+                    this.sessionStats.totalAttempts++;
+                    if (userChoice === q.ans) {
+                        correct++;
+                        this.sessionStats.totalCorrect++;
+                        this.sessionStats.masteredIds.add(q.id);
+                    } else {
+                        wrong++;
+                    }
+                });
+
+                const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+                document.getElementById('res-score').textContent = `${correct} / ${total}`;
+                document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+                document.getElementById('res-cw').textContent = `${correct}C / ${wrong}W`;
+                document.getElementById('res-time').textContent = this.formatTime(this.quiz.secondsElapsed);
+
+                const headline = document.getElementById('result-headline');
+                if (accuracy >= 85) headline.textContent = "Outstanding Mastery! 🎉";
+                else if (accuracy >= 60) headline.textContent = "Solid Effort! Keep Practicing 💪";
+                else headline.textContent = "Good Attempt! Review the Explanations Below 📚";
+
+                document.getElementById('btn-retry-wrong').classList.toggle('hidden', wrong === 0);
+
+                this.switchViewDOM('results');
+                this.filterReview('all');
+            },
+
+            filterReview(filterType) {
+                const letters = ['A', 'B', 'C', 'D'];
+                const listEl = document.getElementById('results-review-list');
+
+                const filtered = this.quiz.questions.filter(q => {
+                    const userAns = this.quiz.userAnswers[q.id];
+                    const isCorrect = userAns === q.ans;
+                    if (filterType === 'correct') return isCorrect;
+                    if (filterType === 'wrong') return !isCorrect;
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    listEl.innerHTML = `<div class="glass-panel rounded-2xl p-8 text-center text-slate-400 text-sm">No questions match this filter.</div>`;
+                    return;
+                }
+
+                listEl.innerHTML = filtered.map((q, idx) => {
+                    const userAns = this.quiz.userAnswers[q.id];
+                    const isCorrect = userAns === q.ans;
+                    const isSkipped = userAns === undefined;
+
+                    const statusBadge = isCorrect
+                        ? `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Correct</span>`
+                        : isSkipped
+                            ? `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">Skipped</span>`
+                            : `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">Incorrect</span>`;
+
+                    return `
+                        <div class="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="space-y-1">
+                                    <span class="text-xs font-bold text-indigo-400">Unit ${q.unit} • Question #${q.num}</span>
+                                    <h4 class="font-bold text-base sm:text-lg">${q.q}</h4>
+                                </div>
+                                ${statusBadge}
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                ${q.options.map((opt, oIdx) => {
+                                    let cls = "border-slate-800 bg-slate-900/50 text-slate-400";
+                                    if (oIdx === q.ans) {
+                                        cls = "border-emerald-500/60 bg-emerald-500/15 text-emerald-200 font-semibold";
+                                    } else if (oIdx === userAns && !isCorrect) {
+                                        cls = "border-rose-500/60 bg-rose-500/15 text-rose-200 font-semibold";
+                                    }
+                                    return `
+                                        <div class="p-3 rounded-xl border text-xs sm:text-sm flex items-center justify-between ${cls}">
+                                            <span><strong>${letters[oIdx]})</strong> ${opt}</span>
+                                            ${oIdx === q.ans ? '<i class="ph-fill ph-check-circle text-emerald-400 text-base"></i>' : ''}
+                                            ${oIdx === userAns && !isCorrect ? '<i class="ph-fill ph-x-circle text-rose-400 text-base"></i>' : ''}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs sm:text-sm text-slate-300">
+                                <strong class="text-indigo-400">Explanation:</strong> ${q.exp}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            retryWrongQuestions() {
+                const wrongPool = this.quiz.questions.filter(q => this.quiz.userAnswers[q.id] !== q.ans);
+                if (wrongPool.length > 0) {
+                    this.launchQuizInstance(wrongPool, 'practice', `Retry Incorrect (${wrongPool.length} MCQs)`);
+                }
+            },
+
+            restartSameTest() {
+                this.launchQuizInstance([...this.quiz.questions], this.quiz.mode, this.quiz.unitLabel);
+            },
+
+            toggleAllExplorerAnswers() {
+                this.explorerShowAllAnswers = !this.explorerShowAllAnswers;
+                const btn = document.getElementById('btn-toggle-all-ans');
+                btn.innerHTML = this.explorerShowAllAnswers
+                    ? `<i class="ph-bold ph-eye-slash"></i> <span>Hide All Answers</span>`
+                    : `<i class="ph-bold ph-eye"></i> <span>Show All Answers</span>`;
+                this.renderExplorer();
+            },
+
+            renderExplorer() {
+                const query = (document.getElementById('explorer-search')?.value || '').toLowerCase().trim();
+                const unitFilter = document.getElementById('explorer-unit-filter')?.value || 'all';
+                const letters = ['a', 'b', 'c', 'd'];
+
+                const filtered = MCQ_BANK.filter(q => {
+                    const matchesUnit = unitFilter === 'all' || q.unit === parseInt(unitFilter, 10);
+                    const matchesSearch = !query ||
+                        q.q.toLowerCase().includes(query) ||
+                        q.options.some(o => o.toLowerCase().includes(query)) ||
+                        q.exp.toLowerCase().includes(query);
+                    return matchesUnit && matchesSearch;
+                });
+
+                const container = document.getElementById('explorer-list');
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div class="glass-panel rounded-2xl p-8 text-center text-slate-400">No matching questions found.</div>`;
+                    return;
+                }
+
+                container.innerHTML = filtered.map(q => {
+                    const showAns = this.explorerShowAllAnswers;
+                    return `
+                        <div class="glass-panel rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300">Unit ${q.unit} • Q${q.num}</span>
+                                <button onclick="document.getElementById('exp-ans-${q.id}').classList.toggle('hidden')" class="text-xs text-indigo-400 hover:underline flex items-center gap-1">
+                                    <i class="ph-bold ph-lightbulb"></i> Toggle Answer
+                                </button>
+                            </div>
+                            <h4 class="font-bold text-base">${q.num}. ${q.q}</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                ${q.options.map((opt, idx) => `
+                                    <div class="p-2.5 rounded-xl border ${showAns && idx === q.ans ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-200 font-semibold' : 'border-slate-800 bg-slate-900/50 text-slate-300'}">
+                                        ${letters[idx]}) ${opt}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div id="exp-ans-${q.id}" class="${showAns ? '' : 'hidden'} p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-xs sm:text-sm space-y-1">
+                                <p class="font-bold text-emerald-400">Correct Answer: ${letters[q.ans].toUpperCase()}) ${q.options[q.ans]}</p>
+                                <p class="text-slate-300">${q.exp}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            renderTheory() {
+                const unitFilter = document.getElementById('theory-unit-filter')?.value || 'all';
+                const unitsToRender = unitFilter === 'all' ? [1, 2, 3, 4, 5] : [parseInt(unitFilter, 10)];
+
+                const container = document.getElementById('theory-list');
+                container.innerHTML = unitsToRender.map(uId => {
+                    const meta = UNITS_META.find(m => m.id === uId);
+                    const twoMarks = THEORY_BANK.filter(t => t.unit === uId && t.marks === 2);
+                    const sixMarks = THEORY_BANK.filter(t => t.unit === uId && t.marks === 6);
+
+                    return `
+                        <div class="glass-panel rounded-3xl p-6 space-y-6">
+                            <div class="border-b border-slate-800 pb-4 flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-indigo-400">${meta.code} (${meta.co})</span>
+                                    <h3 class="text-xl font-bold">${meta.title}</h3>
+                                </div>
+                                <span class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-300">${twoMarks.length} Two-Mark & ${sixMarks.length} Six-Mark Questions</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h4 class="text-sm font-bold uppercase tracking-wider text-emerald-400">Part B — 2 Marks Questions</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    ${twoMarks.map(item => `
+                                        <div class="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
+                                            <div class="flex items-start justify-between gap-2">
+                                                <h5 class="font-bold text-sm">${item.sno}. ${item.q}</h5>
+                                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 shrink-0">Bloom: ${item.bloom}</span>
+                                            </div>
+                                            <p class="text-xs text-slate-300 whitespace-pre-line leading-relaxed">${item.a}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h4 class="text-sm font-bold uppercase tracking-wider text-amber-400">Part C — 6 Marks Essay Questions (Key Points)</h4>
+                                <div class="space-y-3">
+                                    ${sixMarks.map(item => `
+                                        <div class="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-2">
+                                            <div class="flex items-start justify-between gap-2">
+                                                <h5 class="font-bold text-sm sm:text-base">${item.sno}. ${item.q}</h5>
+                                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400 shrink-0">Bloom: ${item.bloom}</span>
+                                            </div>
+                                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed"><strong class="text-indigo-400">Exam Key Points:</strong> ${item.a}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            resetProgress() {
+                this.openConfirmModal(
+                    "Reset Session Progress?",
+                    "This will clear your current mastered count and accuracy statistics.",
+                    () => {
+                        this.sessionStats.masteredIds.clear();
+                        this.sessionStats.totalAttempts = 0;
+                        this.sessionStats.totalCorrect = 0;
+                        this.renderDashboard();
+                    }
+                );
+            },
+
+            openConfirmModal(title, desc, onConfirm) {
+                document.getElementById('confirm-title').textContent = title;
+                document.getElementById('confirm-desc').textContent = desc;
+                const modal = document.getElementById('confirm-modal');
+                modal.classList.remove('hidden');
+                const btn = document.getElementById('confirm-action-btn');
+                btn.onclick = () => {
+                    modal.classList.add('hidden');
+                    onConfirm();
+                };
+            },
+
+            closeConfirmModal() {
+                document.getElementById('confirm-modal').classList.add('hidden');
+            },
+
+            setupKeyboardShortcuts() {
+                window.addEventListener('keydown', (e) => {
+                    if (this.currentView !== 'quiz' || !this.quiz.active) return;
+                    const key = e.key.toLowerCase();
+                    if (['1', 'a'].includes(key)) this.selectOption(0);
+                    else if (['2', 'b'].includes(key)) this.selectOption(1);
+                    else if (['3', 'c'].includes(key)) this.selectOption(2);
+                    else if (['4', 'd'].includes(key)) this.selectOption(3);
+                    else if (e.key === 'ArrowRight') this.nextQuestion();
+                    else if (e.key === 'ArrowLeft') this.prevQuestion();
+                });
+            }
+        };
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
